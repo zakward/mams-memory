@@ -17,12 +17,23 @@ function Home() {
   const handleToggleVideo = () => {
     const newShowVideo = !showVideo;
     setShowVideo(newShowVideo);
-    if (newShowVideo && iframeRef.current) {
-      // Attempt to autoplay by appending autoplay param after show
-      let src = "https://drive.google.com/file/d/1oK_M2H54R9f-qlcmbPFF9ad4pXKwDZYJ/preview";
-      src += (src.includes('?') ? '&' : '?') + 'autoplay=1';
-      iframeRef.current.src = src;
-    }
+  };
+
+  // Inline styles for responsive video container
+  const videoContainerWrapperStyle = {
+    width: '100%',
+    maxWidth: '720px', // cap width for larger screens to look like a card
+    margin: '0 auto',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 18px rgba(0,0,0,.15)',
+    background: '#000',
+  };
+
+  const videoAspectRatioWrapperStyle = {
+    position: 'relative',
+    width: '100%',
+    paddingTop: '56.25%', // 16:9 aspect ratio
   };
 
   return (
@@ -35,13 +46,13 @@ function Home() {
       />
       
       <h1 className="text-2xl font-serif text-indigo-800 mb-1 font-bold text-shadow-md">In Loving Memory of Theresa Heffington</h1>
-      <h1 className="text-3xl font-serif text-indigo-800 mb-2 font-bold italic text-shadow-sm">"Mam"</h1> {/* Added italic and lighter shadow */}
+      <h1 className="text-3xl font-serif text-indigo-800 mb-2 font-bold italic text-shadow-sm">"Mam"</h1>
 
       <p className="text-base font-serif text-indigo-700 mb-6 font-semibold text-shadow-sm">Born: [Birth Date] - Passed: [Death Date]</p>
       
       {/* Celebration of Life Video Button */}
       <button 
-        onClick={handleToggleVideo} // Toggle for expand/collapse and play
+        onClick={handleToggleVideo}
         className="bg-teal-600 text-white px-4 py-2 rounded-full flex items-center justify-center mx-auto hover:bg-teal-700 transition text-sm shadow-md mb-4 w-full max-w-xs"
       >
         <PlayArrowIcon className="mr-1" fontSize="small" />
@@ -50,16 +61,18 @@ function Home() {
       </button>
       
       {showVideo && (
-        <div className="mt-2 w-full mb-6 relative pb-[56.25%] h-0 overflow-hidden rounded-lg shadow-md">
-          <iframe 
-            ref={iframeRef}
-            src="https://drive.google.com/file/d/1oK_M2H54R9f-qlcmbPFF9ad4pXKwDZYJ/preview" 
-            title="Celebration of Life" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen 
-            className="absolute top-0 left-0 w-full h-full"
-          ></iframe>
+        <div style={videoContainerWrapperStyle} className="mt-2 mb-6">
+          <div style={videoAspectRatioWrapperStyle}>
+            <iframe 
+              ref={iframeRef}
+              src="https://drive.google.com/file/d/1oK_M2H54R9f-qlcmbPFF9ad4pXKwDZYJ/preview" 
+              title="Celebration of Life" 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" 
+              allowFullScreen 
+              className="absolute top-0 left-0 w-full h-full"
+            ></iframe>
+          </div>
         </div>
       )}
       
